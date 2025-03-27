@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleCommonResponseDto;
 import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleFindResponseDto;
-import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleUpdateRequestDto;
 import spring.advanced.schedulerjpa.schedule.domain.entity.Schedule;
 import spring.advanced.schedulerjpa.schedule.repository.ScheduleRepository;
 
