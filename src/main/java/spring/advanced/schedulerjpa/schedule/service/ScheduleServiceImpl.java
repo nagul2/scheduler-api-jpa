@@ -63,4 +63,17 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         return new ScheduleCommonResponseDto(id);
     }
+
+    @Override
+    @Transactional
+    public void deleteSchedule(Long id) {
+        // 필수 구현 단계에서는 예외 처리 X, 도전 때 구현
+        Schedule findSchedule = scheduleRepository.findById(id).orElse(null);
+
+        if (findSchedule == null) {
+            return;
+        }
+
+        scheduleRepository.delete(findSchedule);
+    }
 }
