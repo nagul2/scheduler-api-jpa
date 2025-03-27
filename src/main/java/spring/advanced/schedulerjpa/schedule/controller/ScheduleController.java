@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleCommonResponseDto;
 import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleCreateRequestDto;
 import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleFindResponseDto;
+import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleUpdateRequestDto;
+import spring.advanced.schedulerjpa.schedule.domain.entity.Schedule;
 import spring.advanced.schedulerjpa.schedule.service.ScheduleService;
 
 import java.util.List;
@@ -37,5 +39,13 @@ public class ScheduleController {
     public ResponseEntity<ScheduleFindResponseDto> findScheduleById(@PathVariable Long id) {
 
         return new ResponseEntity<>(scheduleService.findScheduleById(id), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ScheduleCommonResponseDto> updateSchedule(
+            @PathVariable Long id,
+            @RequestBody ScheduleUpdateRequestDto requestDto) {
+
+        return new ResponseEntity<>(scheduleService.updateSchedule(id, requestDto), HttpStatus.OK);
     }
 }
