@@ -29,12 +29,12 @@ public class Schedule extends BaseEntity {
     @Lob
     private String content;
 
-    public void updateSchedule(ScheduleUpdateRequestDto requestDto) {
-        if (requestDto.title() != null) {
-            title = requestDto.title();
+    public void updateSchedule(String title, String content) {
+        if (title != null) {
+            this.title = title;
         }
-        if (requestDto.content() != null) {
-            content = requestDto.content();
+        if (content != null) {
+            this.content = content;
         }
     }
 }

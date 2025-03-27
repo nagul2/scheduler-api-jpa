@@ -51,7 +51,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional
-    public ScheduleCommonResponseDto updateSchedule(Long id, ScheduleUpdateRequestDto requestDto) {
+    public ScheduleCommonResponseDto updateSchedule(Long id, String title, String content) {
         // 필수 구현 단계에서는 예외 처리 X, 도전 때 구현
         Schedule findSchedule = scheduleRepository.findById(id).orElse(null);
 
@@ -59,7 +59,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             return null;
         }
 
-        findSchedule.updateSchedule(requestDto);
+        findSchedule.updateSchedule(title, content);
 
         return new ScheduleCommonResponseDto(id);
     }
