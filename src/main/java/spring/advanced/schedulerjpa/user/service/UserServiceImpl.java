@@ -61,4 +61,17 @@ public class UserServiceImpl implements UserService {
         findUser.updateUser(username, email);
         return new UserUpdateResponseDto(id, findUser.getUsername(), findUser.getEmail());
     }
+
+    @Override
+    @Transactional
+    public void deleteUser(Long id) {
+        // 필수 구현 단계에서는 예외 처리 X, 도전 때 구현
+        User findUser = userRepository.findById(id).orElse(null);
+
+        if (findUser == null) {
+            return;
+        }
+
+        userRepository.delete(findUser);
+    }
 }
