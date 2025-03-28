@@ -1,7 +1,7 @@
 package spring.advanced.schedulerjpa.user.domain.dto;
 
-public record UserCreateRequestDto(
+public record UserUpdateResponseDto(
+        Long id,
         String username,
-        String email
-) {
+        String email) {
 }

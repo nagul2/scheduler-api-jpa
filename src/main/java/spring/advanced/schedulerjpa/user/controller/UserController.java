@@ -4,9 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import spring.advanced.schedulerjpa.user.domain.dto.UserCreateRequestDto;
+import spring.advanced.schedulerjpa.user.domain.dto.UserCommonRequestDto;
 import spring.advanced.schedulerjpa.user.domain.dto.UserCreateResponseDto;
 import spring.advanced.schedulerjpa.user.domain.dto.UserFindResponseDto;
+import spring.advanced.schedulerjpa.user.domain.dto.UserUpdateResponseDto;
 import spring.advanced.schedulerjpa.user.service.UserService;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserCreateResponseDto> addUser(@RequestBody UserCreateRequestDto requestDto) {
+    public ResponseEntity<UserCreateResponseDto> addUser(@RequestBody UserCommonRequestDto requestDto) {
         String username = requestDto.username();
         String email = requestDto.email();
         return new ResponseEntity<>(userService.saveUser(username, email), HttpStatus.CREATED);
@@ -34,4 +35,16 @@ public class UserController {
     public ResponseEntity<UserFindResponseDto> findUserById(@PathVariable Long id) {
         return new ResponseEntity<>(userService.findUserById(id), HttpStatus.OK);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserUpdateResponseDto> updateUser(
+            @PathVariable Long id,
+            @RequestBody UserCommonRequestDto requestDto) {
+
+        String username = requestDto.username();
+        String email = requestDto.email();
+
+        return new ResponseEntity<>(userService.updateUser(id, username, email), HttpStatus.OK);
+    }
+
 }

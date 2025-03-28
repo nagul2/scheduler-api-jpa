@@ -22,4 +22,15 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String username;
     private String email;
+
+    public User updateUser(String username, String email) {
+        if (username != null) {
+            this.username = username;
+        }
+
+        if (email != null) {
+            this.email = email;
+        }
+        return this;
+    }
 }
