@@ -7,6 +7,8 @@ import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleCommonResponseDt
 import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleFindResponseDto;
 import spring.advanced.schedulerjpa.schedule.domain.entity.Schedule;
 import spring.advanced.schedulerjpa.schedule.repository.ScheduleRepository;
+import spring.advanced.schedulerjpa.user.domain.entity.User;
+import spring.advanced.schedulerjpa.user.repository.UserRepository;
 
 import java.util.List;
 
@@ -16,12 +18,16 @@ import java.util.List;
 public class ScheduleServiceImpl implements ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
-    public ScheduleCommonResponseDto saveSchedule(String writer, String title, String content) {
+    public ScheduleCommonResponseDto saveSchedule(Long userId, String title, String content) {
+
+        User findUser = userRepository.findById(userId).orElse(null);
+
         Schedule schedule = Schedule.builder()
-                .writer(writer)
+                .user(findUser)
                 .title(title)
                 .content(content)
                 .build();

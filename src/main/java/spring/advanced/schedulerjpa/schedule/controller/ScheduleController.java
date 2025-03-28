@@ -22,11 +22,11 @@ public class ScheduleController {
     @PostMapping
     public ResponseEntity<ScheduleCommonResponseDto> addSchedule(@RequestBody ScheduleCreateRequestDto requestDto) {
 
-        String writer = requestDto.writer();
+        Long userId = requestDto.userId();
         String title = requestDto.title();
         String content = requestDto.content();
 
-        return new ResponseEntity<>(scheduleService.saveSchedule(writer, title, content), HttpStatus.CREATED);
+        return new ResponseEntity<>(scheduleService.saveSchedule(userId, title, content), HttpStatus.CREATED);
     }
 
     @GetMapping

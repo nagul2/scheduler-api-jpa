@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 public record ScheduleFindResponseDto(
         Long id,
-        String writer,
+        String username,
         String title,
         String content,
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -16,7 +16,7 @@ public record ScheduleFindResponseDto(
     static public ScheduleFindResponseDto mapToDto(Schedule schedule) {
         return new ScheduleFindResponseDto(
                 schedule.getId(),
-                schedule.getWriter(),
+                schedule.getUser().getUsername(),
                 schedule.getTitle(),
                 schedule.getContent(),
                 schedule.getModifyAt()
