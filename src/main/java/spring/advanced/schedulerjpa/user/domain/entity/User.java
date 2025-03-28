@@ -22,8 +22,9 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String username;
     private String email;
+    private String password;    // password 추가
 
-    public User updateUser(String username, String email) {
+    public void updateUser(String username, String email, String password) {
         if (username != null) {
             this.username = username;
         }
@@ -31,6 +32,9 @@ public class User extends BaseEntity {
         if (email != null) {
             this.email = email;
         }
-        return this;
+
+        if (password != null) {
+            this.password = password;
+        }
     }
 }

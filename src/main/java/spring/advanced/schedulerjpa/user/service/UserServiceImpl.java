@@ -20,11 +20,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserCreateResponseDto saveUser(String username, String email) {
+    public UserCreateResponseDto saveUser(String username, String email, String password) {
 
         User user = User.builder()
                 .username(username)
                 .email(email)
+                .password(password)
                 .build();
 
         User savedUser = userRepository.save(user);
@@ -50,25 +51,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserUpdateResponseDto updateUser(Long id, String username, String email) {
+    public UserUpdateResponseDto updateUser(Long id, String username, String email, String updatePassword, String validPassword) {
         // 필수 구현 단계에서는 예외 처리 X, 도전 때 구현
         User findUser = userRepository.findById(id).orElse(null);
 
-        if (findUser == null) {
+        if (findUser == null || !findUser.getPassword().equals(validPassword)) {
             return null;
         }
 
-        findUser.updateUser(username, email);
+        findUser.updateUser(username, email, updatePassword);
         return new UserUpdateResponseDto(id, findUser.getUsername(), findUser.getEmail());
     }
 
     @Override
     @Transactional
-    public void deleteUser(Long id) {
+    public void deleteUser(Long id, String validPassword) {
         // 필수 구현 단계에서는 예외 처리 X, 도전 때 구현
         User findUser = userRepository.findById(id).orElse(null);
 
-        if (findUser == null) {
+        if (findUser == null || !findUser.getPassword().equals(validPassword)) {
             return;
         }
 

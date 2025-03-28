@@ -7,13 +7,13 @@ import spring.advanced.schedulerjpa.user.domain.dto.UserUpdateResponseDto;
 import java.util.List;
 
 public interface UserService {
-    UserCreateResponseDto saveUser(String username, String email);
+    UserCreateResponseDto saveUser(String username, String email, String password);
 
     List<UserFindResponseDto> findAllUsers();
 
     UserFindResponseDto findUserById(Long id);
 
-    UserUpdateResponseDto updateUser(Long id, String username, String email);
+    UserUpdateResponseDto updateUser(Long id, String username, String email, String password, String validPassword);
 
-    void deleteUser(Long id);
+    void deleteUser(Long id, String aLong);
 }

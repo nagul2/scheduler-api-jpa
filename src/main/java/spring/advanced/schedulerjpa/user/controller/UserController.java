@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import spring.advanced.schedulerjpa.user.domain.dto.UserCommonRequestDto;
-import spring.advanced.schedulerjpa.user.domain.dto.UserCreateResponseDto;
-import spring.advanced.schedulerjpa.user.domain.dto.UserFindResponseDto;
-import spring.advanced.schedulerjpa.user.domain.dto.UserUpdateResponseDto;
+import spring.advanced.schedulerjpa.user.domain.dto.*;
 import spring.advanced.schedulerjpa.user.service.UserService;
 
 import java.util.List;
@@ -20,10 +17,11 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserCreateResponseDto> addUser(@RequestBody UserCommonRequestDto requestDto) {
+    public ResponseEntity<UserCreateResponseDto> addUser(@RequestBody UserCreateRequestDto requestDto) {
         String username = requestDto.username();
         String email = requestDto.email();
-        return new ResponseEntity<>(userService.saveUser(username, email), HttpStatus.CREATED);
+        String password = requestDto.password();
+        return new ResponseEntity<>(userService.saveUser(username, email, password), HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -39,17 +37,21 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<UserUpdateResponseDto> updateUser(
             @PathVariable Long id,
-            @RequestBody UserCommonRequestDto requestDto) {
+            @RequestBody UserUpdateRequestDto requestDto) {
 
         String username = requestDto.username();
         String email = requestDto.email();
+        String updatePassword = requestDto.updatePassword();
+        String validPassword = requestDto.validPassword();
 
-        return new ResponseEntity<>(userService.updateUser(id, username, email), HttpStatus.OK);
+        return new ResponseEntity<>(userService.updateUser(id, username, email, updatePassword, validPassword), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id,
+                                           @RequestHeader("valid-password") UserDeleteRequestDto requestDto) {
+
+        userService.deleteUser(id, requestDto.validPassword());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

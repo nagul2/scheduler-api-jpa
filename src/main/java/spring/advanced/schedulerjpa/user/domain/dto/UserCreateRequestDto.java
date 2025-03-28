@@ -1,7 +1,8 @@
 package spring.advanced.schedulerjpa.user.domain.dto;
 
-public record UserCommonRequestDto(
+public record UserCreateRequestDto(
         String username,
-        String email
+        String email,
+        String password
 ) {
 }
