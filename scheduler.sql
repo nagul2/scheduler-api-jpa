@@ -6,15 +6,15 @@ create table schedule
     writer    varchar(255) not null,
     content   longtext,
     create_at datetime,
-    modify_at datetime,
+    modify_at datetime
 )
 
 -- user 테이블 생성
-create table user
+create table users
 (
     id        bigint       not null primary key auto_increment,
-    username  varchar(255) not null,
-    email     varchar(255),
+    username  varchar(255) not null unique,
+    email     varchar(255) unique,
     create_at datetime,
-    modify_at datetime,
+    modify_at datetime
 )

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import spring.advanced.schedulerjpa.common.entity.BaseEntity;
 
 @Builder
-@Table(name = "user")
+@Table(name = "users")
 @Entity
 @Getter
 @NoArgsConstructor
@@ -19,8 +19,9 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
+    @Column(unique = true)
     private String email;
     private String password;    // password 추가
 
@@ -37,4 +38,5 @@ public class User extends BaseEntity {
             this.password = password;
         }
     }
+
 }

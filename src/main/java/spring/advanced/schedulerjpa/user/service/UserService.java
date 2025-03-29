@@ -13,7 +13,7 @@ public interface UserService {
 
     UserFindResponseDto findUserById(Long id);
 
-    UserUpdateResponseDto updateUser(Long id, String username, String email, String password, String validPassword);
+    UserUpdateResponseDto updateUser(Long id, String username, String email, String password);
 
-    void deleteUser(Long id, String aLong);
+    void deleteUser(Long id);
 }

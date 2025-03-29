@@ -16,7 +16,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity<UserCreateResponseDto> addUser(@RequestBody UserCreateRequestDto requestDto) {
         String username = requestDto.username();
         String email = requestDto.email();
@@ -41,17 +41,15 @@ public class UserController {
 
         String username = requestDto.username();
         String email = requestDto.email();
-        String updatePassword = requestDto.updatePassword();
-        String validPassword = requestDto.validPassword();
+        String password = requestDto.password();
 
-        return new ResponseEntity<>(userService.updateUser(id, username, email, updatePassword, validPassword), HttpStatus.OK);
+        return new ResponseEntity<>(userService.updateUser(id, username, email, password), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id,
-                                           @RequestHeader("valid-password") UserDeleteRequestDto requestDto) {
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
 
-        userService.deleteUser(id, requestDto.validPassword());
+        userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -51,25 +51,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserUpdateResponseDto updateUser(Long id, String username, String email, String updatePassword, String validPassword) {
+    public UserUpdateResponseDto updateUser(Long id, String username, String email, String password) {
         // 필수 구현 단계에서는 예외 처리 X, 도전 때 구현
         User findUser = userRepository.findById(id).orElse(null);
 
-        if (findUser == null || !findUser.getPassword().equals(validPassword)) {
+        if (findUser == null) {
             return null;
         }
 
-        findUser.updateUser(username, email, updatePassword);
+        findUser.updateUser(username, email, password);
         return new UserUpdateResponseDto(id, findUser.getUsername(), findUser.getEmail());
     }
 
     @Override
     @Transactional
-    public void deleteUser(Long id, String validPassword) {
+    public void deleteUser(Long id) {
         // 필수 구현 단계에서는 예외 처리 X, 도전 때 구현
         User findUser = userRepository.findById(id).orElse(null);
 
-        if (findUser == null || !findUser.getPassword().equals(validPassword)) {
+        if (findUser == null) {
             return;
         }
 
