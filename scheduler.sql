@@ -20,3 +20,17 @@ create table users
     create_at datetime,
     modify_at datetime
 )
+
+-- comment 테이블 생성
+create table comment
+(
+    id bigint not null primary key auto_increment,
+    schedule_id bigint,
+    user_id bigint,
+    content varchar(255) not null,
+    create_at datetime,
+    modify_at datetime,
+    foreign key (user_id) references users (id),
+    foreign key (schedule_id) references schedule (id)
+
+)
