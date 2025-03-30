@@ -69,10 +69,18 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
     public CommentCommonResponseDto updateComment(Long id, Long scheduleId, String content) {
         Comment findCommentByIdAndScheduleId = findCommentByIdAndScheduleIdOElseThrow(id, scheduleId);
         findCommentByIdAndScheduleId.updateContent(content);
         return new CommentCommonResponseDto(findCommentByIdAndScheduleId.getId());
+    }
+
+    @Override
+    @Transactional
+    public void deleteComment(Long id, Long scheduleId) {
+        Comment findCommentByIdAndScheduleId = findCommentByIdAndScheduleIdOElseThrow(id, scheduleId);
+        commentRepository.delete(findCommentByIdAndScheduleId);
     }
 
     private Comment findCommentByIdAndScheduleIdOElseThrow(Long id, Long scheduleId) {

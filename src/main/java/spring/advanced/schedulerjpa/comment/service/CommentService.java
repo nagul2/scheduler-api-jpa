@@ -13,4 +13,6 @@ public interface CommentService {
     CommentFindResponseDto findCommentByIdAndScheduleId(Long id, Long scheduleId);
 
     CommentCommonResponseDto updateComment(Long id, Long scheduleId, String content);
+
+    void deleteComment(Long id, Long scheduleId);
 }
