@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.advanced.schedulerjpa.common.exception.ErrorCode;
 import spring.advanced.schedulerjpa.common.exception.NotFoundScheduleException;
+import spring.advanced.schedulerjpa.common.exception.NotFoundUserException;
 import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleCommonResponseDto;
 import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleFindResponseDto;
 import spring.advanced.schedulerjpa.schedule.domain.entity.Schedule;
@@ -26,7 +27,9 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional
     public ScheduleCommonResponseDto saveSchedule(Long userId, String title, String content) {
 
-        User findUser = userRepository.findById(userId).orElse(null);
+        User findUser = userRepository.findById(userId).orElseThrow(
+                () ->new NotFoundUserException(ErrorCode.USER_NOT_FOUND.getMessage())
+        );
 
         Schedule schedule = Schedule.builder()
                 .user(findUser)
