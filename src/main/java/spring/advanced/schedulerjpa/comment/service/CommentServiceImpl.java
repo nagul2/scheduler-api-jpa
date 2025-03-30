@@ -16,6 +16,7 @@ import spring.advanced.schedulerjpa.user.domain.entity.User;
 import spring.advanced.schedulerjpa.user.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -57,5 +58,13 @@ public class CommentServiceImpl implements CommentService {
         }
 
         return findCommentsByScheduleId.stream().map(CommentFindResponseDto::mapToDto).toList();
+    }
+
+    @Override
+    public CommentFindResponseDto findCommentByIdAndScheduleId(Long id, Long scheduleId) {
+        Comment findCommentByIdAndScheduleId = commentRepository.findByIdAndScheduleId(id, scheduleId).orElseThrow(
+                () -> new NotFoundCommentException(ErrorCode.COMMENT_NOT_FOUND.getMessage())
+        );
+        return CommentFindResponseDto.mapToDto(findCommentByIdAndScheduleId);
     }
 }

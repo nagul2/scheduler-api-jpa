@@ -6,10 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.advanced.schedulerjpa.auth.dto.AuthLoginResponseDto;
-import spring.advanced.schedulerjpa.comment.domain.dto.CommentCommonRequestDto;
-import spring.advanced.schedulerjpa.comment.domain.dto.CommentCommonResponseDto;
-import spring.advanced.schedulerjpa.comment.domain.dto.CommentFindRequestDto;
-import spring.advanced.schedulerjpa.comment.domain.dto.CommentFindResponseDto;
+import spring.advanced.schedulerjpa.comment.domain.dto.*;
 import spring.advanced.schedulerjpa.comment.service.CommentService;
 import spring.advanced.schedulerjpa.common.consant.AuthConst;
 
@@ -36,8 +33,17 @@ public class CommentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CommentFindResponseDto>> findAllCommentsByScheduleId(@RequestBody CommentFindRequestDto requestDto) {
-        Long scheduleId = requestDto.scheduleId();
+    public ResponseEntity<List<CommentFindResponseDto>> findAllCommentsByScheduleId(@RequestParam Long scheduleId) {
         return new ResponseEntity<>(commentService.findAllCommentsByScheduleId(scheduleId), HttpStatus.OK);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CommentFindResponseDto> findCommentByIdAndScheduleId(
+            @PathVariable Long id,
+            @RequestParam Long scheduleId) {
+
+        return new ResponseEntity<>(commentService.findCommentByIdAndScheduleId(id, scheduleId), HttpStatus.OK);
+
+    }
+
 }
