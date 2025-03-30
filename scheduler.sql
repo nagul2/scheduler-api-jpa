@@ -15,8 +15,8 @@ create table users
 (
     id        bigint       not null primary key auto_increment,
     username  varchar(255) not null unique,
-    password  varchar(255) unique,
-    email     varchar(255),
+    password  varchar(255),
+    email     varchar(255) unique,
     create_at datetime,
     modify_at datetime
 )
