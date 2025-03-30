@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import spring.advanced.schedulerjpa.common.config.PasswordEncoder;
 import spring.advanced.schedulerjpa.common.exception.DuplicatedUserException;
 import spring.advanced.schedulerjpa.common.exception.DuplicatedUsernameException;
 import spring.advanced.schedulerjpa.common.exception.ErrorCode;
@@ -24,6 +25,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -35,7 +37,7 @@ public class UserServiceImpl implements UserService {
         User user = User.builder()
                 .username(username)
                 .email(email)
-                .password(password)
+                .password(passwordEncoder.encode(password))
                 .build();
 
         try {

@@ -7,13 +7,12 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     /**
-     * 로그인 시 입력한 유저이름과 비밀번호로 찾기
+     * 로그인 시 입력한 유저이름 조회
      *
      * @param username 입력한 사용자 이름
-     * @param password 입력한 비밀번호
      * @return 조회된 User
      */
-    Optional<User> findByUsernameAndPassword(String username, String password);
+    Optional<User> findByUsername(String username);
 
     /**
      * DB에 동일한 유저가 있는지 확인
