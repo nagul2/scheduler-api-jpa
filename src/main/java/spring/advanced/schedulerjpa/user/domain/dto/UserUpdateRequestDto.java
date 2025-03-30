@@ -10,6 +10,9 @@ public record UserUpdateRequestDto(
         String username,
 
         @Email
+        @Pattern(regexp = "^[a-zA-Z0-9]+$",
+                message = "{validation.email}"
+        )
         String email,
 
         @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^*_+|<>?:{}])[A-Za-z\\d~!@#$%^*_+|<>?:{}]{4,}$",
