@@ -2,6 +2,7 @@ package spring.advanced.schedulerjpa.comment.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import spring.advanced.schedulerjpa.comment.domain.dto.CommentCommonResponseDto;
 import spring.advanced.schedulerjpa.comment.domain.dto.CommentFindResponseDto;
 import spring.advanced.schedulerjpa.comment.domain.entity.Comment;
@@ -16,10 +17,10 @@ import spring.advanced.schedulerjpa.user.domain.entity.User;
 import spring.advanced.schedulerjpa.user.repository.UserRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
@@ -27,6 +28,7 @@ public class CommentServiceImpl implements CommentService {
     private final ScheduleRepository scheduleRepository;
 
     @Override
+    @Transactional
     public CommentCommonResponseDto saveComment(Long userId, Long scheduleId, String content) {
 
         User findUser = userRepository.findById(userId).orElseThrow(
