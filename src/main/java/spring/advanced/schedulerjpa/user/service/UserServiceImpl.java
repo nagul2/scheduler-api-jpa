@@ -1,8 +1,12 @@
 package spring.advanced.schedulerjpa.user.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import spring.advanced.schedulerjpa.common.exception.DuplicatedUserException;
+import spring.advanced.schedulerjpa.common.exception.DuplicatedUsernameException;
 import spring.advanced.schedulerjpa.common.exception.ErrorCode;
 import spring.advanced.schedulerjpa.common.exception.NotFoundUserException;
 import spring.advanced.schedulerjpa.user.domain.dto.UserCreateResponseDto;
@@ -13,6 +17,7 @@ import spring.advanced.schedulerjpa.user.repository.UserRepository;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -23,6 +28,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserCreateResponseDto saveUser(String username, String email, String password) {
+        if (userRepository.existsByUsername(username)) {
+            throw new DuplicatedUsernameException(ErrorCode.DUPLICATED_USERNAME.getMessage());
+        }
 
         User user = User.builder()
                 .username(username)
@@ -30,8 +38,13 @@ public class UserServiceImpl implements UserService {
                 .password(password)
                 .build();
 
-        User savedUser = userRepository.save(user);
-        return new UserCreateResponseDto(savedUser.getId(), savedUser.getUsername());
+        try {
+            User savedUser = userRepository.save(user);
+            return new UserCreateResponseDto(savedUser.getId(), savedUser.getUsername());
+        } catch (DataIntegrityViolationException e) {
+            log.error("[강제 저장 시도 발생]");
+            throw new DuplicatedUserException(ErrorCode.DUPLICATED_USER.getMessage());
+        }
     }
 
     @Override

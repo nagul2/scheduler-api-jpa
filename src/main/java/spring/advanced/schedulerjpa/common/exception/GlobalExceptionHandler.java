@@ -17,7 +17,6 @@ public class GlobalExceptionHandler {
 
     /**
      * 인증 실패 예외 응답
-     * 상태코드, 상태 메시지, 예외 메시지, 일자를 담은 DTO객체와 상태코드를 ResponseEntity로 반환
      *
      * @param e 인증 실패 예외
      * @return ErrorDto, 401 상태코드
@@ -31,8 +30,21 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * 중복된 Username 으로 로그인을 시도하거나 강제로 Username 검증을 건너뛰고 유저를 저장 시도할 때 예외 응답
+     *
+     * @param e 중복된 유저 예외
+     * @return ErrorDto, 400 상태코드
+     */
+    @ExceptionHandler({DuplicatedUserException.class, DuplicatedUsernameException.class})
+    public ResponseEntity<ErrorDto> duplicatedUserException(RuntimeException e) {
+        log.error("[duplicatedUserException] ex: ", e);
+        ErrorDto errorDto = new ErrorDto(ErrorCode.LOGIN_FAILED.getCode(), ErrorCode.LOGIN_FAILED, e.getMessage(), LocalDateTime.now());
+
+        return new ResponseEntity<>(errorDto, ErrorCode.LOGIN_FAILED.getHttpStatus());
+    }
+
+    /**
      * 입력값 검증 예외 응답
-     * 발생된 검증 예외들의 중복에러를 제외한 필드와, 메시지를 Map으로 변환하여 상태코드와 함께 ErrorDto로 변환 후 ResponseEntity로 반환
      *
      * @param e Bean Validation 예외
      * @return ErrorDto, 400 상태코드
