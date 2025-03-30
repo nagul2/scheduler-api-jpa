@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import spring.advanced.schedulerjpa.common.entity.BaseEntity;
 
 @Builder
-@Table(name = "user")
+@Table(name = "users")
 @Entity
 @Getter
 @NoArgsConstructor
