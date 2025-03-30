@@ -20,7 +20,7 @@ public enum ErrorCode {
     // User
     USER_NOT_FOUND("404", HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
     DUPLICATED_USERNAME("400", HttpStatus.BAD_REQUEST, "사용자 이름이 중복되었습니다. 다른 이름으로 가입해 주세요."),
-    DUPLICATED_USER("400", HttpStatus.BAD_REQUEST, "이미 존재하는 사용자이므로 등록할 수 없습니다."),
+    DUPLICATED_USER("400", HttpStatus.BAD_REQUEST, "사용자 이름이나 email이 이미 등록되어있습니다."),
 
     // Comment
     COMMENT_NOT_FOUND("404", HttpStatus.NOT_FOUND, "댓글을 찾을 수 없습니다."),
