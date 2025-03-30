@@ -64,9 +64,20 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentFindResponseDto findCommentByIdAndScheduleId(Long id, Long scheduleId) {
-        Comment findCommentByIdAndScheduleId = commentRepository.findByIdAndScheduleId(id, scheduleId).orElseThrow(
+        Comment findCommentByIdAndScheduleId = findCommentByIdAndScheduleIdOElseThrow(id, scheduleId);
+        return CommentFindResponseDto.mapToDto(findCommentByIdAndScheduleId);
+    }
+
+    @Override
+    public CommentCommonResponseDto updateComment(Long id, Long scheduleId, String content) {
+        Comment findCommentByIdAndScheduleId = findCommentByIdAndScheduleIdOElseThrow(id, scheduleId);
+        findCommentByIdAndScheduleId.updateContent(content);
+        return new CommentCommonResponseDto(findCommentByIdAndScheduleId.getId());
+    }
+
+    private Comment findCommentByIdAndScheduleIdOElseThrow(Long id, Long scheduleId) {
+        return commentRepository.findByIdAndScheduleId(id, scheduleId).orElseThrow(
                 () -> new NotFoundCommentException(ErrorCode.COMMENT_NOT_FOUND.getMessage())
         );
-        return CommentFindResponseDto.mapToDto(findCommentByIdAndScheduleId);
     }
 }
