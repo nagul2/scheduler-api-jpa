@@ -1,9 +1,12 @@
 package spring.advanced.schedulerjpa.schedule.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import spring.advanced.schedulerjpa.auth.dto.AuthLoginResponseDto;
+import spring.advanced.schedulerjpa.common.consant.AuthConst;
 import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleCommonResponseDto;
 import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleCreateRequestDto;
 import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleFindResponseDto;
@@ -20,9 +23,13 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @PostMapping
-    public ResponseEntity<ScheduleCommonResponseDto> addSchedule(@RequestBody ScheduleCreateRequestDto requestDto) {
+    public ResponseEntity<ScheduleCommonResponseDto> addSchedule(
+            @RequestBody ScheduleCreateRequestDto requestDto,
+            HttpServletRequest servletRequest) {
 
-        Long userId = requestDto.userId();
+        AuthLoginResponseDto loginDto = (AuthLoginResponseDto) servletRequest.getSession().getAttribute(AuthConst.LOGIN_MEMBER);
+
+        Long userId = loginDto.id();
         String title = requestDto.title();
         String content = requestDto.content();
 
