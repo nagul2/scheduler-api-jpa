@@ -1,6 +1,6 @@
 package spring.advanced.schedulerjpa.comment.domain.dto;
 
-public record CommentCommonResponseDto(
-        Long id
+public record CommentFindRequestDto(
+        Long scheduleId
 ) {
 }

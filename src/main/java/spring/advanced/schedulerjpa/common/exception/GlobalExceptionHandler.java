@@ -49,7 +49,7 @@ public class GlobalExceptionHandler {
      * @param e 유저, 일정 못찾는 예외(조상이 RuntimeException)
      * @return ErrorDto, 404 상태코드
      */
-    @ExceptionHandler({NotFoundScheduleException.class, NotFoundUserException.class})
+    @ExceptionHandler({NotFoundScheduleException.class, NotFoundUserException.class, NotFoundCommentException.class})
     public ResponseEntity<ErrorDto> notFoundException(RuntimeException e) {
         log.error("[notFoundException] ex: ", e);
         ErrorDto errorDto = new ErrorDto(ErrorCode.LOGIN_FAILED.getCode(), ErrorCode.LOGIN_FAILED, e.getMessage(), LocalDateTime.now());

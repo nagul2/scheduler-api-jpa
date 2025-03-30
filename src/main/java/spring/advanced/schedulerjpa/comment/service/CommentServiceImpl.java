@@ -3,15 +3,19 @@ package spring.advanced.schedulerjpa.comment.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import spring.advanced.schedulerjpa.comment.domain.dto.CommentCommonResponseDto;
+import spring.advanced.schedulerjpa.comment.domain.dto.CommentFindResponseDto;
 import spring.advanced.schedulerjpa.comment.domain.entity.Comment;
 import spring.advanced.schedulerjpa.comment.repository.CommentRepository;
 import spring.advanced.schedulerjpa.common.exception.ErrorCode;
+import spring.advanced.schedulerjpa.common.exception.NotFoundCommentException;
 import spring.advanced.schedulerjpa.common.exception.NotFoundScheduleException;
 import spring.advanced.schedulerjpa.common.exception.NotFoundUserException;
 import spring.advanced.schedulerjpa.schedule.domain.entity.Schedule;
 import spring.advanced.schedulerjpa.schedule.repository.ScheduleRepository;
 import spring.advanced.schedulerjpa.user.domain.entity.User;
 import spring.advanced.schedulerjpa.user.repository.UserRepository;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -41,5 +45,17 @@ public class CommentServiceImpl implements CommentService {
 
         Comment savedComment = commentRepository.save(comment);
         return new CommentCommonResponseDto(savedComment.getId());
+    }
+
+    @Override
+    public List<CommentFindResponseDto> findAllCommentsByScheduleId(Long scheduleId) {
+
+        List<Comment> findCommentsByScheduleId = commentRepository.findAllByScheduleId(scheduleId);
+
+        if (findCommentsByScheduleId.isEmpty()) {
+            throw new NotFoundCommentException(ErrorCode.COMMENT_NOT_FOUND.getMessage());
+        }
+
+        return findCommentsByScheduleId.stream().map(CommentFindResponseDto::mapToDto).toList();
     }
 }
