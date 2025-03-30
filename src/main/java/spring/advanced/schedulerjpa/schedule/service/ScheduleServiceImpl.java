@@ -3,6 +3,8 @@ package spring.advanced.schedulerjpa.schedule.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import spring.advanced.schedulerjpa.common.exception.ErrorCode;
+import spring.advanced.schedulerjpa.common.exception.NotFoundScheduleException;
 import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleCommonResponseDto;
 import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleFindResponseDto;
 import spring.advanced.schedulerjpa.schedule.domain.entity.Schedule;
@@ -45,25 +47,14 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public ScheduleFindResponseDto findScheduleById(Long id) {
-        // 필수 구현 단계에서는 예외 처리 X, 도전 때 구현
-        Schedule findSchedule = scheduleRepository.findById(id).orElse(null);
-        if (findSchedule == null) {
-            return null;
-        }
-
+        Schedule findSchedule = findScheduleOrElseThrow(id);
         return ScheduleFindResponseDto.mapToDto(findSchedule);
     }
 
     @Override
     @Transactional
     public ScheduleCommonResponseDto updateSchedule(Long id, String title, String content) {
-        // 필수 구현 단계에서는 예외 처리 X, 도전 때 구현
-        Schedule findSchedule = scheduleRepository.findById(id).orElse(null);
-
-        if (findSchedule == null) {
-            return null;
-        }
-
+        Schedule findSchedule = findScheduleOrElseThrow(id);
         findSchedule.updateSchedule(title, content);
 
         return new ScheduleCommonResponseDto(id);
@@ -72,13 +63,20 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     @Transactional
     public void deleteSchedule(Long id) {
-        // 필수 구현 단계에서는 예외 처리 X, 도전 때 구현
-        Schedule findSchedule = scheduleRepository.findById(id).orElse(null);
-
-        if (findSchedule == null) {
-            return;
-        }
-
+        Schedule findSchedule = findScheduleOrElseThrow(id);
         scheduleRepository.delete(findSchedule);
+    }
+
+    /**
+     * scheduleRepository.findById(id).orElseThrow()로 못찾으면 에러를 던지고,
+     * 찾으면 일정을 반환하는 코드를 메서드화하여 코드 중복을 해결하고 가독성있게 해결
+     *
+     * @param id 찾고자 할 일정의 아이디값
+     * @return 찾으면 Schedule, 못 찾으면 NotFoundScheduleException
+     */
+    private Schedule findScheduleOrElseThrow(Long id) {
+        return scheduleRepository.findById(id).orElseThrow(
+                () -> new NotFoundScheduleException(ErrorCode.SCHEDULE_NOT_FOUND.getMessage())
+        );
     }
 }

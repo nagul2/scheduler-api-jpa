@@ -3,6 +3,8 @@ package spring.advanced.schedulerjpa.user.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import spring.advanced.schedulerjpa.common.exception.ErrorCode;
+import spring.advanced.schedulerjpa.common.exception.NotFoundUserException;
 import spring.advanced.schedulerjpa.user.domain.dto.UserCreateResponseDto;
 import spring.advanced.schedulerjpa.user.domain.dto.UserFindResponseDto;
 import spring.advanced.schedulerjpa.user.domain.dto.UserUpdateResponseDto;
@@ -40,39 +42,36 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserFindResponseDto findUserById(Long id) {
-        // 필수 구현 단계에서는 예외 처리 X, 도전 때 구현
-        User findUser = userRepository.findById(id).orElse(null);
-
-        if (findUser == null) {
-            return null;
-        }
+        User findUser = findUserOrElseThrow(id);
         return UserFindResponseDto.mapToDto(findUser);
     }
 
     @Override
     @Transactional
     public UserUpdateResponseDto updateUser(Long id, String username, String email, String password) {
-        // 필수 구현 단계에서는 예외 처리 X, 도전 때 구현
-        User findUser = userRepository.findById(id).orElse(null);
-
-        if (findUser == null) {
-            return null;
-        }
-
+        User findUser = findUserOrElseThrow(id);
         findUser.updateUser(username, email, password);
+
         return new UserUpdateResponseDto(id, findUser.getUsername(), findUser.getEmail());
     }
 
     @Override
     @Transactional
     public void deleteUser(Long id) {
-        // 필수 구현 단계에서는 예외 처리 X, 도전 때 구현
-        User findUser = userRepository.findById(id).orElse(null);
-
-        if (findUser == null) {
-            return;
-        }
-
+        User findUser = findUserOrElseThrow(id);
         userRepository.delete(findUser);
+    }
+
+    /**
+     * userRepository.findById(id).orElseThrow()로 못찾으면 에러를 던지고,
+     * 찾으면 유저를 반환하는 코드를 메서드화하여 코드 중복을 해결하고 가독성있게 해결
+     *
+     * @param id 찾을 유저의 아이디
+     * @return 찾으면 User, 못 찾으면 NotFoundUserException
+     */
+    private User findUserOrElseThrow(Long id) {
+        return userRepository.findById(id).orElseThrow(
+                () -> new NotFoundUserException(ErrorCode.USER_NOT_FOUND.getMessage())
+        );
     }
 }
