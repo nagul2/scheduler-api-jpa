@@ -6,10 +6,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.advanced.schedulerjpa.common.config.PasswordEncoder;
-import spring.advanced.schedulerjpa.common.exception.DuplicatedUserException;
-import spring.advanced.schedulerjpa.common.exception.DuplicatedUsernameException;
-import spring.advanced.schedulerjpa.common.exception.ErrorCode;
-import spring.advanced.schedulerjpa.common.exception.NotFoundUserException;
+import spring.advanced.schedulerjpa.common.exception.*;
 import spring.advanced.schedulerjpa.user.domain.dto.UserCreateResponseDto;
 import spring.advanced.schedulerjpa.user.domain.dto.UserFindResponseDto;
 import spring.advanced.schedulerjpa.user.domain.dto.UserUpdateResponseDto;
@@ -52,6 +49,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserFindResponseDto> findAllUsers() {
         List<User> findAllUsers = userRepository.findAll();
+
+        if (findAllUsers.isEmpty()) {
+            throw new NotFoundCommentException(ErrorCode.USER_NOT_FOUND.getMessage());
+        }
+
         return findAllUsers.stream().map(UserFindResponseDto::mapToDto).toList();
     }
 

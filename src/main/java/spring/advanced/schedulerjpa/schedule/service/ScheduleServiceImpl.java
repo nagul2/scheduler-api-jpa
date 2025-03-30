@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.advanced.schedulerjpa.common.exception.ErrorCode;
+import spring.advanced.schedulerjpa.common.exception.NotFoundCommentException;
 import spring.advanced.schedulerjpa.common.exception.NotFoundScheduleException;
 import spring.advanced.schedulerjpa.common.exception.NotFoundUserException;
 import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleCommonResponseDto;
@@ -44,8 +45,13 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public List<ScheduleFindResponseDto> findAllSchedules() {
 
-        List<Schedule> schedules = scheduleRepository.findAll();
-        return schedules.stream().map(ScheduleFindResponseDto::mapToDto).toList();
+        List<Schedule> findSchedules = scheduleRepository.findAll();
+
+        if (findSchedules.isEmpty()) {
+            throw new NotFoundCommentException(ErrorCode.SCHEDULE_NOT_FOUND.getMessage());
+        }
+
+        return findSchedules.stream().map(ScheduleFindResponseDto::mapToDto).toList();
     }
 
     @Override
