@@ -14,15 +14,19 @@ public class LoginService {
 
     private final UserRepository userRepository;
 
+    /**
+     * 로그인
+     *
+     * @param username 요청 username
+     * @param password 요청 password
+     * @return 못찾으면 AuthFiledException, 찾으면 응답 DTO
+     */
     public AuthLoginResponseDto login(String username, String password) {
 
-        // 모든 예외처리는 도전에서 수행
-        User findUser = userRepository.findByUsernameAndPassword(username, password).orElse(null);
+        User findUser = userRepository.findByUsernameAndPassword(username, password).orElseThrow(
+                () -> new AuthFailedException(ErrorCode.LOGIN_FAILED.getMessage())
+        );
 
-        if (findUser == null) {
-            throw new AuthFailedException(ErrorCode.LOGIN_FAILED.getMessage());
-        }
-
-        return new AuthLoginResponseDto(findUser.getId(),findUser.getUsername());
+        return new AuthLoginResponseDto(findUser.getId(), findUser.getUsername());
     }
 }
