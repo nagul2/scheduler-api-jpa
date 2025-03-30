@@ -17,5 +17,5 @@ create table users
     username  varchar(255) not null,
     email     varchar(255),
     create_at datetime,
-    modify_at datetime,
+    modify_at datetime
 )
