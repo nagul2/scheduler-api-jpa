@@ -63,7 +63,7 @@ public class GlobalExceptionHandler {
      * @param e Bean Validation 예외
      * @return ErrorDto, 400 상태코드
      */
-    @ExceptionHandler
+    @ExceptionHandler({})
     public ResponseEntity<ErrorDto> inputValidException(MethodArgumentNotValidException e) {
         log.error("[inputValidException] ex: ", e);
 

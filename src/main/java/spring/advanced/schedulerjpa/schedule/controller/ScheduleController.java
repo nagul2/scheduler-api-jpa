@@ -1,6 +1,7 @@
 package spring.advanced.schedulerjpa.schedule.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +24,7 @@ public class ScheduleController {
 
     @PostMapping
     public ResponseEntity<ScheduleCommonResponseDto> addSchedule(
-            @RequestBody ScheduleCreateRequestDto requestDto,
+            @Valid @RequestBody ScheduleCreateRequestDto requestDto,
             HttpServletRequest servletRequest) {
 
         AuthLoginResponseDto loginDto = (AuthLoginResponseDto) servletRequest.getSession().getAttribute(AuthConst.LOGIN_MEMBER);
