@@ -1,20 +1,22 @@
 package spring.advanced.schedulerjpa.schedule.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import spring.advanced.schedulerjpa.comment.repository.CommentRepository;
 import spring.advanced.schedulerjpa.common.exception.ErrorCode;
 import spring.advanced.schedulerjpa.common.exception.NotFoundCommentException;
 import spring.advanced.schedulerjpa.common.exception.NotFoundScheduleException;
 import spring.advanced.schedulerjpa.common.exception.NotFoundUserException;
 import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleCommonResponseDto;
+import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleFindAllPagingResponseDto;
 import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleFindResponseDto;
 import spring.advanced.schedulerjpa.schedule.domain.entity.Schedule;
 import spring.advanced.schedulerjpa.schedule.repository.ScheduleRepository;
 import spring.advanced.schedulerjpa.user.domain.entity.User;
 import spring.advanced.schedulerjpa.user.repository.UserRepository;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -43,15 +45,14 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public List<ScheduleFindResponseDto> findAllSchedules() {
+    public Page<ScheduleFindAllPagingResponseDto> findAllSchedules(Pageable pageable) {
 
-        List<Schedule> findSchedules = scheduleRepository.findAll();
+        Page<ScheduleFindAllPagingResponseDto> findAllWithCommentCount = scheduleRepository.findAllWithCommentCount(pageable);
 
-        if (findSchedules.isEmpty()) {
-            throw new NotFoundCommentException(ErrorCode.SCHEDULE_NOT_FOUND.getMessage());
+        if (findAllWithCommentCount.isEmpty()) {
+            throw new NotFoundScheduleException(ErrorCode.SCHEDULE_NOT_FOUND.getMessage());
         }
-
-        return findSchedules.stream().map(ScheduleFindResponseDto::mapToDto).toList();
+        return findAllWithCommentCount;
     }
 
     @Override

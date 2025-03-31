@@ -2,18 +2,17 @@ package spring.advanced.schedulerjpa.schedule.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.advanced.schedulerjpa.auth.dto.AuthLoginResponseDto;
 import spring.advanced.schedulerjpa.common.consant.AuthConst;
-import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleCommonResponseDto;
-import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleCreateRequestDto;
-import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleFindResponseDto;
-import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleUpdateRequestDto;
+import spring.advanced.schedulerjpa.schedule.domain.dto.*;
 import spring.advanced.schedulerjpa.schedule.service.ScheduleService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/schedules")
@@ -37,8 +36,10 @@ public class ScheduleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ScheduleFindResponseDto>> findAllSchedules() {
-        return new ResponseEntity<>(scheduleService.findAllSchedules(), HttpStatus.OK);
+    public ResponseEntity<Page<ScheduleFindAllPagingResponseDto>> findAllSchedules(
+            @PageableDefault(size = 10, sort = "modifyAt", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        return new ResponseEntity<>(scheduleService.findAllSchedules(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

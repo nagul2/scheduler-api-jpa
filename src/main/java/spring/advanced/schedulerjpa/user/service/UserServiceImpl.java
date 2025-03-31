@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
         List<User> findAllUsers = userRepository.findAll();
 
         if (findAllUsers.isEmpty()) {
-            throw new NotFoundCommentException(ErrorCode.USER_NOT_FOUND.getMessage());
+            throw new NotFoundUserException(ErrorCode.USER_NOT_FOUND.getMessage());
         }
 
         return findAllUsers.stream().map(UserFindResponseDto::mapToDto).toList();

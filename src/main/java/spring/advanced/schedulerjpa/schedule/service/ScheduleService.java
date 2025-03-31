@@ -1,14 +1,15 @@
 package spring.advanced.schedulerjpa.schedule.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleCommonResponseDto;
+import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleFindAllPagingResponseDto;
 import spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleFindResponseDto;
-
-import java.util.List;
 
 public interface ScheduleService {
     ScheduleCommonResponseDto saveSchedule(Long userId, String title, String content);
 
-    List<ScheduleFindResponseDto> findAllSchedules();
+    Page<ScheduleFindAllPagingResponseDto> findAllSchedules(Pageable pageable);
 
     ScheduleFindResponseDto findScheduleById(Long id);
 

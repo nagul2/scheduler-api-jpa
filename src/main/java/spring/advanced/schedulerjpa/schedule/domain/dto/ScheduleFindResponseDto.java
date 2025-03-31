@@ -11,7 +11,8 @@ public record ScheduleFindResponseDto(
         String title,
         String content,
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-        LocalDateTime modifyAt) {
+        LocalDateTime modifyAt
+        ) {
 
     static public ScheduleFindResponseDto mapToDto(Schedule schedule) {
         return new ScheduleFindResponseDto(
