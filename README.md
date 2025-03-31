@@ -1,15 +1,27 @@
-# 도전 LV8
+# JPA를 활용한 일정 관리 
 
-## 📍개발 내용
-### 일정 전체 조회 페이징 적용
-- Pageable, Page 인터페이스를 활용하여 일정 전체 조회 API에 페이징 적용
-  - controller 에서 @PageableDefault을 활용하여 size 10, 수정일 내림차순 기본값 적용
+---
+## 🛠️ 사용 기술
+<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=OpenJDK&logoColor=white"> <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white"> <img src="https://img.shields.io/badge/spring Boot-6DB33F?style=for-the-badge&logo=SpringBoot&logoColor=white"> <img src="https://img.shields.io/badge/springsecurity-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white"> <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
+
+---
+
+## 📑 최종 ERD
+- Schedule, Users, Comment 테이블
+![img.png](img.png)
 
 
-- 요구사항에 맞추기 위해 일정 전체 조회 전용 DTO 분리
-  - 일정 작성일, 각 일정의 댓글 개수 필드 추가
-  - 기존 DTO는 일정 단건 조회에서만 사용
+---
+## 📝 최종 API 명세서
+- PostMan 으로 작성한 API 명세서
+- 
 
-- 일정 전체 조회 API에 각 일정의 댓글 개수를 조회하기 위해 @Query 사용
-  - @Query로 직접 쿼리를 작성하여 일정과 댓글의 id가 맞는 댓글의 개수를 서브쿼리로 가져오도록 쿼리를 작성
-  - 조회 쿼리이기 때문에 @Modifying은 사용하지 않았음
+---
+## 📌 구현 기능
+- 일정, 유저, 댓글의 각 CRUD 구현
+- 각 Entity를 단방향 연관관계 매핑
+- 예외처리(빈값, 조회 불가, 검증 실패 등)
+- 서블릿 필터와 세션으로 로그인, 로그아웃 로직 구현
+- 비밀번호 암호화 적용
+- 일정 전체조회에 서브 쿼리를 활용하여 페이징 적용
+---
