@@ -1,9 +1,9 @@
 package spring.advanced.schedulerjpa.user.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import spring.advanced.schedulerjpa.user.domain.dto.*;
 import spring.advanced.schedulerjpa.user.service.UserService;
@@ -18,7 +18,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<UserCreateResponseDto> addUser(@Validated @RequestBody UserCreateRequestDto requestDto) {
+    public ResponseEntity<UserCreateResponseDto> addUser(@Valid @RequestBody UserCreateRequestDto requestDto) {
         String username = requestDto.username();
         String email = requestDto.email();
         String password = requestDto.password();
@@ -38,7 +38,7 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<UserUpdateResponseDto> updateUser(
             @PathVariable Long id,
-            @Validated @RequestBody UserUpdateRequestDto requestDto) {
+            @Valid @RequestBody UserUpdateRequestDto requestDto) {
 
         String username = requestDto.username();
         String email = requestDto.email();
