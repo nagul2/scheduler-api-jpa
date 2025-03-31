@@ -6,6 +6,10 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ErrorCode {
 
+    // Common -> default 용도
+    NOT_FOUND("404", HttpStatus.NOT_FOUND, "대상을 찾을 수 없습니다."),
+    DUPLICATED("400", HttpStatus.BAD_REQUEST, "중복 되었습니다."),
+
     // Auth
     LOGIN_FAILED("401", HttpStatus.UNAUTHORIZED, "로그인 실패, 아이디나 비밀번호를 확인해 주세요."),
     UNAUTHORIZED_ACCESS("401", HttpStatus.UNAUTHORIZED, "인증되지 않은 접근입니다. 로그인 후 시도해 주세요."),

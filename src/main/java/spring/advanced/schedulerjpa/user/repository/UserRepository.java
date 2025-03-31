@@ -18,7 +18,16 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * DB에 동일한 유저가 있는지 확인
      *
      * @param username 사용자 이름
-     * @return 등록 여부
+     * @return 중복 여부
      */
     boolean existsByUsername(String username);
+
+    /**
+     * DB에 동일한 email이 있는지 확인
+     *
+     * @param email 이메일
+     * @return 중복 여부
+     */
+    boolean existsByEmail(String email);
+
 }

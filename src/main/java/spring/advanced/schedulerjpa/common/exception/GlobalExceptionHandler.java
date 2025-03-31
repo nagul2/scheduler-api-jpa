@@ -38,9 +38,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({DuplicatedUserException.class, DuplicatedUsernameException.class})
     public ResponseEntity<ErrorDto> duplicatedUserException(RuntimeException e) {
         log.error("[duplicatedUserException] ex: ", e);
-        ErrorDto errorDto = new ErrorDto(ErrorCode.LOGIN_FAILED.getCode(), ErrorCode.LOGIN_FAILED, e.getMessage(), LocalDateTime.now());
 
-        return new ResponseEntity<>(errorDto, ErrorCode.LOGIN_FAILED.getHttpStatus());
+        ErrorCode errorCode = ErrorCode.DUPLICATED;
+        if (e instanceof DuplicatedUserException) {
+            errorCode = ErrorCode.DUPLICATED_USER;
+        } else if (e instanceof DuplicatedUsernameException) {
+            errorCode = ErrorCode.DUPLICATED_USERNAME;
+        }
+
+        ErrorDto errorDto = new ErrorDto(errorCode.getCode(), errorCode, errorCode.getMessage(), LocalDateTime.now());
+
+        return new ResponseEntity<>(errorDto, errorCode.getHttpStatus());
     }
 
     /**
@@ -52,9 +60,20 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({NotFoundScheduleException.class, NotFoundUserException.class, NotFoundCommentException.class})
     public ResponseEntity<ErrorDto> notFoundException(RuntimeException e) {
         log.error("[notFoundException] ex: ", e);
-        ErrorDto errorDto = new ErrorDto(ErrorCode.LOGIN_FAILED.getCode(), ErrorCode.LOGIN_FAILED, e.getMessage(), LocalDateTime.now());
 
-        return new ResponseEntity<>(errorDto, ErrorCode.LOGIN_FAILED.getHttpStatus());
+        ErrorCode errorCode = ErrorCode.NOT_FOUND;
+
+        if (e instanceof NotFoundScheduleException) {
+            errorCode = ErrorCode.SCHEDULE_NOT_FOUND;
+        } else if (e instanceof NotFoundUserException) {
+            errorCode = ErrorCode.USER_NOT_FOUND;
+        } else if (e instanceof NotFoundCommentException) {
+            errorCode = ErrorCode.COMMENT_NOT_FOUND;
+        }
+
+        ErrorDto errorDto = new ErrorDto(errorCode.getCode(), errorCode, errorCode.getMessage(), LocalDateTime.now());
+
+        return new ResponseEntity<>(errorDto, errorCode.getHttpStatus());
     }
 
     /**

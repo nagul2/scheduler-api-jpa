@@ -66,7 +66,12 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserUpdateResponseDto updateUser(Long id, String username, String email, String password) {
+        if (userRepository.existsByUsername(username) || userRepository.existsByEmail(email)) {
+            throw new DuplicatedUserException(ErrorCode.DUPLICATED_USER.getMessage());
+        }
+
         User findUser = findUserOrElseThrow(id);
+
         findUser.updateUser(username, email, password);
 
         return new UserUpdateResponseDto(id, findUser.getUsername(), findUser.getEmail());
