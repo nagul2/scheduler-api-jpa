@@ -14,7 +14,7 @@
 ---
 ## 📝 최종 API 명세서
 - PostMan 으로 작성한 API 명세서
-- 
+- https://web.postman.co/documentation/32918270-30f92f1e-d373-4429-8433-deeee2113ace/publish?workspaceId=da7695e7-2eb0-4f0b-8e44-dfd0e4c62f8e
 
 ---
 ## 📌 구현 기능
