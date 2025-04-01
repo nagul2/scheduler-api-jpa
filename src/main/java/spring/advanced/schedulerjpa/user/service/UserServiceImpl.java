@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import spring.advanced.schedulerjpa.auth.dto.AuthLoginResponseDto;
 import spring.advanced.schedulerjpa.common.config.PasswordEncoder;
 import spring.advanced.schedulerjpa.common.exception.*;
 import spring.advanced.schedulerjpa.user.domain.dto.UserCreateResponseDto;
@@ -65,23 +66,34 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserUpdateResponseDto updateUser(Long id, String username, String email, String password) {
+    public UserUpdateResponseDto updateUser(Long id, String username, String email, String password, AuthLoginResponseDto loginDto) {
         if (userRepository.existsByUsername(username) || userRepository.existsByEmail(email)) {
             throw new DuplicatedUserException(ErrorCode.DUPLICATED_USER.getMessage());
         }
 
         User findUser = findUserOrElseThrow(id);
 
-        findUser.updateUser(username, email, password);
+        validUser(loginDto, findUser);
+
+        findUser.updateUser(username, email, passwordEncoder.encode(password));
 
         return new UserUpdateResponseDto(id, findUser.getUsername(), findUser.getEmail());
     }
 
     @Override
     @Transactional
-    public void deleteUser(Long id) {
+    public void deleteUser(Long id, AuthLoginResponseDto loginDto) {
         User findUser = findUserOrElseThrow(id);
+
+        validUser(loginDto, findUser);
+
         userRepository.delete(findUser);
+    }
+
+    private void validUser(AuthLoginResponseDto loginDto, User findUser) {
+        if (!findUser.getUsername().equals(loginDto.username())) {
+            throw new AuthFailedException(ErrorCode.FORBIDDEN, ErrorCode.FORBIDDEN.getMessage());
+        }
     }
 
     /**

@@ -24,10 +24,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<ErrorDto> authFailedException(AuthFailedException e) {
         log.error("[authFiledException] ex: ", e);
-        ErrorDto errorDto = new ErrorDto(ErrorCode.LOGIN_FAILED.getCode(), ErrorCode.LOGIN_FAILED, e.getMessage(), LocalDateTime.now());
+        ErrorCode errorCode = e.getErrorCode();
+        ErrorDto errorDto = new ErrorDto(errorCode.getCode(), errorCode, errorCode.getMessage(), LocalDateTime.now());
 
-        return new ResponseEntity<>(errorDto, ErrorCode.LOGIN_FAILED.getHttpStatus());
+        return new ResponseEntity<>(errorDto, errorCode.getHttpStatus());
     }
+
 
     /**
      * 중복된 Username 으로 로그인을 시도하거나 강제로 Username 검증을 건너뛰고 유저를 저장 시도할 때 예외 응답

@@ -1,10 +1,13 @@
 package spring.advanced.schedulerjpa.user.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import spring.advanced.schedulerjpa.auth.dto.AuthLoginResponseDto;
+import spring.advanced.schedulerjpa.common.constant.AuthConst;
 import spring.advanced.schedulerjpa.user.domain.dto.*;
 import spring.advanced.schedulerjpa.user.service.UserService;
 
@@ -57,30 +60,36 @@ public class UserController {
      *
      * @param id 수정할 유저 id
      * @param requestDto 수정할 유저 내용
-     * @return 수정된 유저 정보가 담긴 DTO, 성공시 200 응답
+     * @param servletRequest 서블릿 리퀘스트(로그인 정보 꺼내기 위함)
+     * @return 변경된 유저 id가 남긴 DTO, 성공시 200 응답
      */
     @PutMapping("/{id}")
     public ResponseEntity<UserUpdateResponseDto> updateUser(
             @PathVariable Long id,
-            @Valid @RequestBody UserUpdateRequestDto requestDto) {
+            @Valid @RequestBody UserUpdateRequestDto requestDto,
+            HttpServletRequest servletRequest) {
+
+        AuthLoginResponseDto loginDto = (AuthLoginResponseDto) servletRequest.getSession().getAttribute(AuthConst.LOGIN_MEMBER);
 
         String username = requestDto.username();
         String email = requestDto.email();
         String password = requestDto.password();
 
-        return new ResponseEntity<>(userService.updateUser(id, username, email, password), HttpStatus.OK);
+        return new ResponseEntity<>(userService.updateUser(id, username, email, password, loginDto), HttpStatus.OK);
     }
 
     /**
      * 유저 삭제 API
      *
      * @param id 삭제할 유저 id
+     * @param servletRequest 서블릿 리퀘스트(로그인 정보 꺼내기 위함)
      * @return 성공시 200 상태 코드
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id, HttpServletRequest servletRequest) {
+        AuthLoginResponseDto loginDto = (AuthLoginResponseDto) servletRequest.getSession().getAttribute(AuthConst.LOGIN_MEMBER);
 
-        userService.deleteUser(id);
+        userService.deleteUser(id, loginDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -17,6 +17,8 @@ public enum ErrorCode {
     LOGIN_FAILED("401", HttpStatus.UNAUTHORIZED, "로그인 실패, 아이디나 비밀번호를 확인해 주세요."),
     UNAUTHORIZED_ACCESS("401", HttpStatus.UNAUTHORIZED, "인증되지 않은 접근입니다. 로그인 후 시도해 주세요."),
     LOGIN_FAILED_PASSWORD("401", HttpStatus.UNAUTHORIZED, "비밀번호를 확인해 주세요."),
+    FORBIDDEN("403", HttpStatus.FORBIDDEN, "잘못된 접근입니다."),
+
 
     // Valid
     VALID_BAD_REQUEST("400",HttpStatus.BAD_REQUEST, "잘못된 입력값 입니다."),

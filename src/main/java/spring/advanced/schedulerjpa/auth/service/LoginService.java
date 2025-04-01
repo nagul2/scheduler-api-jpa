@@ -27,11 +27,11 @@ public class LoginService {
     public AuthLoginResponseDto login(String username, String password) {
 
         User findUser = userRepository.findByUsername(username)
-                .orElseThrow(() -> new AuthFailedException(ErrorCode.LOGIN_FAILED.getMessage())
+                .orElseThrow(() -> new AuthFailedException(ErrorCode.LOGIN_FAILED, ErrorCode.LOGIN_FAILED.getMessage())
         );
 
         if (!passwordEncoder.matches(password, findUser.getPassword())) {
-            throw new AuthFailedException(ErrorCode.LOGIN_FAILED_PASSWORD.getMessage());
+            throw new AuthFailedException(ErrorCode.LOGIN_FAILED, ErrorCode.LOGIN_FAILED_PASSWORD.getMessage());
         }
 
         return new AuthLoginResponseDto(findUser.getId(), findUser.getUsername());
