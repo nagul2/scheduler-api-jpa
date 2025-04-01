@@ -8,7 +8,7 @@
 
 ## 📑 최종 ERD
 - Schedule, Users, Comment 테이블
-![img.png](img.png)
+![img_1.png](img_1.png)
 
 
 ---
