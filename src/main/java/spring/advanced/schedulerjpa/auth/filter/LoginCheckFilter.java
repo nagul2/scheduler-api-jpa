@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.PatternMatchUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import spring.advanced.schedulerjpa.common.consant.AuthConst;
+import spring.advanced.schedulerjpa.common.constant.AuthConst;
 import spring.advanced.schedulerjpa.common.exception.ErrorCode;
 import spring.advanced.schedulerjpa.common.exception.ErrorDto;
 

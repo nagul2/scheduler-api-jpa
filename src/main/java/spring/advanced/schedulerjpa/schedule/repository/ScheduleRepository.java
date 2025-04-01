@@ -9,6 +9,12 @@ import spring.advanced.schedulerjpa.schedule.domain.entity.Schedule;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
+    /**
+     * 일정 전체 조회 시 User에서 username을 가져오고 서브 쿼리로 해당 일정의 댓글 갯수를 가져오는 쿼리
+     *
+     * @param pageable 페이징 정보
+     * @return 조회된 일정
+     */
     @Query(value = """ 
     select new spring.advanced.schedulerjpa.schedule.domain.dto.ScheduleFindAllPagingResponseDto(
         s.id,

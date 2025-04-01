@@ -26,6 +26,15 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final UserRepository userRepository;
 
+    /**
+     * 일정 생성 로직
+     * 유저가 없다면 USER_NOT_FOUND 예외 적용
+     *
+     * @param userId 유저 id
+     * @param title 생성할 일정 제목
+     * @param content 생성할 일정 내용
+     * @return 생성된 일정 id를 DTO에 담아서 반환
+     */
     @Override
     @Transactional
     public ScheduleCommonResponseDto saveSchedule(Long userId, String title, String content) {
@@ -44,6 +53,13 @@ public class ScheduleServiceImpl implements ScheduleService {
         return new ScheduleCommonResponseDto(savedSchedule.getId());
     }
 
+    /**
+     * 일정 전체 조회 로직
+     * 조회된 일정이 없으면 SCHEDULE_NOT_FOUND 예외 적용
+     *
+     * @param pageable 페이징 정보
+     * @return 조회된 일정 정보를 Page객체로 반환
+     */
     @Override
     public Page<ScheduleFindAllPagingResponseDto> findAllSchedules(Pageable pageable) {
 
@@ -55,12 +71,28 @@ public class ScheduleServiceImpl implements ScheduleService {
         return findAllWithCommentCount;
     }
 
+    /**
+     * 일정 단건 조회 로직
+     * 조회된 일정이 없으면 SCHEDULE_NOT_FOUND 예외 적용
+     *
+     * @param id 조회할 일정 id
+     * @return 조회된 일정을 DTO로 변환하여 반환
+     */
     @Override
     public ScheduleFindResponseDto findScheduleById(Long id) {
         Schedule findSchedule = findScheduleOrElseThrow(id);
         return ScheduleFindResponseDto.mapToDto(findSchedule);
     }
 
+    /**
+     * 일정 수정 로직
+     * 조회된 일정이 없으면 SCHEDULE_NOT_FOUND 예외 적용
+     *
+     * @param id 수정할 일정 id
+     * @param title 수정할 일정 제목
+     * @param content 수정할 일정 내용
+     * @return 수정된 일정의 id를 DTO에 담아서 반환
+     */
     @Override
     @Transactional
     public ScheduleCommonResponseDto updateSchedule(Long id, String title, String content) {
@@ -70,6 +102,11 @@ public class ScheduleServiceImpl implements ScheduleService {
         return new ScheduleCommonResponseDto(id);
     }
 
+    /**
+     * 조회된 일정이 없으면 SCHEDULE_NOT_FOUND 예외 적용
+     *
+     * @param id 수정할 일정 id
+     */
     @Override
     @Transactional
     public void deleteSchedule(Long id) {

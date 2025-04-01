@@ -3,6 +3,9 @@ package spring.advanced.schedulerjpa.common.exception;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+/**
+ * 예외 코드 모음 - Enum
+ */
 @Getter
 public enum ErrorCode {
 

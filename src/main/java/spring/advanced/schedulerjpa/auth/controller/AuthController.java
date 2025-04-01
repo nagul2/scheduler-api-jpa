@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import spring.advanced.schedulerjpa.auth.dto.AuthLoginRequestDto;
 import spring.advanced.schedulerjpa.auth.dto.AuthLoginResponseDto;
 import spring.advanced.schedulerjpa.auth.service.LoginService;
-import spring.advanced.schedulerjpa.common.consant.AuthConst;
+import spring.advanced.schedulerjpa.common.constant.AuthConst;
 
 @RestController
 @RequestMapping("/api")
